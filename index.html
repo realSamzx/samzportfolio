@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samz | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        .snowflake {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .profile-img {
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
+        }
+        
+        /* Estilo para o botão de música */
+        .music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+        
+        /* Estilo para mensagens de status */
+        .status-message {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            max-width: 250px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+        
+        .status-message.show {
+            opacity: 1;
+        }
+        
+        /* Terminal effect */
+        .terminal {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .terminal-header {
+            padding: 8px 12px;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .terminal-content {
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            color: #0f0;
+            height: 120px;
+            overflow-y: auto;
+        }
+        
+        .terminal-line {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background-color: #0f0;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Efeito de neve -->
+    <div id="snow-container"></div>
+    
+    <!-- Elemento de áudio para a música de fundo -->
+    <!-- 
+        EDIT THIS SECTION TO CHANGE THE MUSIC:
+        Replace "path/to/your/music.mp3" with your local music file path
+    -->
+    <audio id="bg-music" loop>
+        <source src="audio\audio1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <!-- Botão para controlar a música -->
+    <button id="music-toggle" class="music-btn">
+        <svg id="music-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <span id="music-text">Ligar Música</span>
+    </button>
+    
+    <!-- Mensagem de status -->
+    <div class="status-message" id="status-message"></div>
+    
+    <!-- Conteúdo principal -->
+    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+        <div class="max-w-md w-full bg-black bg-opacity-50 backdrop-blur-sm rounded-xl p-8 border border-gray-800 shadow-2xl transform transition-all duration-500 hover:shadow-white/10">
+            <!-- Foto de perfil -->
+            <div class="flex justify-center mb-6">
+                <img src="https://media.discordapp.net/attachments/1323878495042142298/1323881789239857172/97847722221a7941c8352c4d416898de.jpg?ex=6817a03f&is=68164ebf&hm=dce5765ccdbada7d609508b82d6b30e18888a4e8f2e7127014946755a57d083b&=&format=webp"
+                     alt="Samz Profile"
+                     class="profile-img w-32 h-32 rounded-full object-cover">
+            </div>
+            
+            <!-- Nome -->
+            <h1 class="text-4xl font-bold text-white mb-2 glow-text">samz</h1>
+            
+            <!-- Descrição -->
+            <p class="text-gray-300 mb-6 text-lg">
+                cybersecurity pentester & hacking.
+            </p>
+            
+            <!-- Terminal effect -->
+            <div class="terminal mb-6">
+                <div class="terminal-header">
+                    <div class="terminal-dot bg-red-500"></div>
+                    <div class="terminal-dot bg-yellow-500"></div>
+                    <div class="terminal-dot bg-green-500"></div>
+                    <span class="text-gray-400 ml-2 text-sm">terminal</span>
+                </div>
+                <div class="terminal-content" id="terminal-content">
+                    <div class="terminal-line">$ whoami</div>
+                    <div class="terminal-line">> samz - cybersecurity specialist</div>
+                    <div class="terminal-line">$ skills --list</div>
+                    <div class="terminal-line">> pentesting | ethical hacking | security research</div>
+                    <div class="terminal-line">$ <span class="terminal-cursor"></span></div>
+                </div>
+            </div>
+            
+            <!-- Links sociais - apenas GitHub -->
+            <div class="flex justify-center">
+                <a href="https://github.com/realSamzx" target="_blank" class="social-icon text-gray-400 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Criar efeito de neve
+        function createSnow() {
+            const snowContainer = document.getElementById('snow-container');
+            const snowflakeCount = 50;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                
+                // Tamanho aleatório entre 2px e 6px
+                const size = Math.random() * 4 + 2;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // Posição inicial aleatória
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.top = `${Math.random() * -100}px`;
+                
+                // Duração da animação aleatória entre 5s e 15s
+                const duration = Math.random() * 10 + 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                // Atraso inicial aleatório
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                snowContainer.appendChild(snowflake);
+            }
+        }
+        
+        // Mostrar mensagem de status
+        function showStatusMessage(message, duration = 3000) {
+            const statusElement = document.getElementById('status-message');
+            statusElement.textContent = message;
+            statusElement.classList.add('show');
+            
+            setTimeout(() => {
+                statusElement.classList.remove('show');
+            }, duration);
+        }
+        
+        // Terminal typing effect
+        function typeTerminalText() {
+            const terminal = document.getElementById('terminal-content');
+            const lines = [
+                "$ whoami",
+                "> samz - cybersecurity specialist",
+                "$ skills --list",
+                "> pentesting | ethical hacking | security research",
+                "$ "
+            ];
+            
+            terminal.innerHTML = '';
+            
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    const lineElement = document.createElement('div');
+                    lineElement.className = 'terminal-line';
+                    
+                    // Add blinking cursor to the last line
+                    if (index === lines.length - 1) {
+                        lineElement.innerHTML = line + '<span class="terminal-cursor"></span>';
+                    } else {
+                        lineElement.textContent = line;
+                    }
+                    
+                    terminal.appendChild(lineElement);
+                    terminal.scrollTop = terminal.scrollHeight;
+                }, index * 800);
+            });
+            
+            // Repeat the effect
+            setTimeout(typeTerminalText, lines.length * 800 + 2000);
+        }
+        
+        // Configurar controle de música
+        function setupMusicControl() {
+            const music = document.getElementById('bg-music');
+            const toggleBtn = document.getElementById('music-toggle');
+            const musicIcon = document.getElementById('music-icon');
+            const musicText = document.getElementById('music-text');
+            
+            let isPlaying = false;
+            
+            // Configurar botão de controle
+            toggleBtn.addEventListener('click', function() {
+                if (isPlaying) {
+                    // Se está tocando, pausa a música
+                    music.pause();
+                    musicIcon.innerHTML = `
+                        <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    `;
+                    musicText.textContent = 'Ligar Música';
+                    showStatusMessage('Música pausada');
+                } else {
+                    // Se está pausada, toca a música
+                    music.play()
+                        .then(() => {
+                            musicIcon.innerHTML = `
+                                <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
+                                <line x1="9" y1="9" x2="9" y2="15"></line>
+                                <line x1="15" y1="9" x2="15" y2="15"></line>
+                            `;
+                            musicText.textContent = 'Desligar Música';
+                            showStatusMessage('Música tocando');
+                        })
+                        .catch(error => {
+                            showStatusMessage('Erro ao reproduzir música: ' + error.message);
+                        });
+                }
+                
+                isPlaying = !isPlaying;
+            });
+            
+            // Atualizar interface quando a música terminar
+            music.addEventListener('ended', function() {
+                isPlaying = false;
+                musicIcon.innerHTML = `
+                    <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                `;
+                musicText.textContent = 'Ligar Música';
+            });
+        }
+        
+        // Iniciar quando a página carregar
+        window.addEventListener('load', function() {
+            createSnow();
+            setupMusicControl();
+            typeTerminalText();
+        });
+    </script>
+</body>
+</html>
