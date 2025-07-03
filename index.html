@@ -54,7 +54,6 @@
             filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
         }
         
-        /* Estilo para o botão de música */
         .music-btn {
             position: fixed;
             bottom: 20px;
@@ -77,7 +76,7 @@
             transform: scale(1.05);
         }
         
-        /* Estilo para mensagens de status */
+     
         .status-message {
             position: fixed;
             bottom: 70px;
@@ -98,7 +97,7 @@
             opacity: 1;
         }
         
-        /* Terminal effect */
+       
         .terminal {
             position: relative;
             width: 100%;
@@ -155,20 +154,16 @@
     </style>
 </head>
 <body class="relative">
-    <!-- Efeito de neve -->
+   
     <div id="snow-container"></div>
     
-    <!-- Elemento de áudio para a música de fundo -->
-    <!-- 
-        EDIT THIS SECTION TO CHANGE THE MUSIC:
-        Replace "path/to/your/music.mp3" with your local music file path
+    
     -->
     <audio id="bg-music" loop>
         <source src="audio\audio1.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
     
-    <!-- Botão para controlar a música -->
     <button id="music-toggle" class="music-btn">
         <svg id="music-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
@@ -178,28 +173,28 @@
         <span id="music-text">Ligar Música</span>
     </button>
     
-    <!-- Mensagem de status -->
+  
     <div class="status-message" id="status-message"></div>
     
-    <!-- Conteúdo principal -->
+  >
     <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
         <div class="max-w-md w-full bg-black bg-opacity-50 backdrop-blur-sm rounded-xl p-8 border border-gray-800 shadow-2xl transform transition-all duration-500 hover:shadow-white/10">
-            <!-- Foto de perfil -->
+            
             <div class="flex justify-center mb-6">
                 <img src="https://cdn.discordapp.com/attachments/1332373067590008984/1390175968211239012/Imagem_do_WhatsApp_de_2025-06-30_as_23.13.14_fef8cac1.jpg?ex=68674dc3&is=6865fc43&hm=d010e7df5a79b966c65ee6c6452c0f93fe4cc13c604f7742771581a9a15cfd6d&"
                      alt="Samz Profile"
                      class="profile-img w-32 h-32 rounded-full object-cover">
             </div>
             
-            <!-- Nome -->
+          
             <h1 class="text-4xl font-bold text-white mb-2 glow-text">samz</h1>
             
-            <!-- Descrição -->
+          
             <p class="text-gray-300 mb-6 text-lg">
                 cybersecurity pentester & hacking.
             </p>
             
-            <!-- Terminal effect -->
+            
             <div class="terminal mb-6">
                 <div class="terminal-header">
                     <div class="terminal-dot bg-red-500"></div>
@@ -216,7 +211,7 @@
                 </div>
             </div>
             
-            <!-- Links sociais - apenas GitHub -->
+            
             <div class="flex justify-center">
                 <a href="https://github.com/realSamzx" target="_blank" class="social-icon text-gray-400 hover:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github">
@@ -228,7 +223,7 @@
     </div>
 
     <script>
-        // Criar efeito de neve
+        
         function createSnow() {
             const snowContainer = document.getElementById('snow-container');
             const snowflakeCount = 50;
@@ -237,27 +232,24 @@
                 const snowflake = document.createElement('div');
                 snowflake.classList.add('snowflake');
                 
-                // Tamanho aleatório entre 2px e 6px
+                
                 const size = Math.random() * 4 + 2;
                 snowflake.style.width = `${size}px`;
                 snowflake.style.height = `${size}px`;
                 
-                // Posição inicial aleatória
+                
                 snowflake.style.left = `${Math.random() * 100}vw`;
                 snowflake.style.top = `${Math.random() * -100}px`;
                 
-                // Duração da animação aleatória entre 5s e 15s
                 const duration = Math.random() * 10 + 5;
                 snowflake.style.animationDuration = `${duration}s`;
                 
-                // Atraso inicial aleatório
                 snowflake.style.animationDelay = `${Math.random() * 5}s`;
                 
                 snowContainer.appendChild(snowflake);
             }
         }
         
-        // Mostrar mensagem de status
         function showStatusMessage(message, duration = 3000) {
             const statusElement = document.getElementById('status-message');
             statusElement.textContent = message;
@@ -268,7 +260,6 @@
             }, duration);
         }
         
-        // Terminal typing effect
         function typeTerminalText() {
             const terminal = document.getElementById('terminal-content');
             const lines = [
@@ -286,7 +277,6 @@
                     const lineElement = document.createElement('div');
                     lineElement.className = 'terminal-line';
                     
-                    // Add blinking cursor to the last line
                     if (index === lines.length - 1) {
                         lineElement.innerHTML = line + '<span class="terminal-cursor"></span>';
                     } else {
@@ -298,11 +288,9 @@
                 }, index * 800);
             });
             
-            // Repeat the effect
             setTimeout(typeTerminalText, lines.length * 800 + 2000);
         }
         
-        // Configurar controle de música
         function setupMusicControl() {
             const music = document.getElementById('bg-music');
             const toggleBtn = document.getElementById('music-toggle');
@@ -311,10 +299,8 @@
             
             let isPlaying = false;
             
-            // Configurar botão de controle
             toggleBtn.addEventListener('click', function() {
                 if (isPlaying) {
-                    // Se está tocando, pausa a música
                     music.pause();
                     musicIcon.innerHTML = `
                         <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
@@ -324,7 +310,6 @@
                     musicText.textContent = 'Ligar Música';
                     showStatusMessage('Música pausada');
                 } else {
-                    // Se está pausada, toca a música
                     music.play()
                         .then(() => {
                             musicIcon.innerHTML = `
@@ -343,7 +328,6 @@
                 isPlaying = !isPlaying;
             });
             
-            // Atualizar interface quando a música terminar
             music.addEventListener('ended', function() {
                 isPlaying = false;
                 musicIcon.innerHTML = `
@@ -355,7 +339,6 @@
             });
         }
         
-        // Iniciar quando a página carregar
         window.addEventListener('load', function() {
             createSnow();
             setupMusicControl();
