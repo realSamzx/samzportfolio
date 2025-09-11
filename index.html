@@ -17,7 +17,7 @@
       position: relative;
     }
 
-    /* Neve atrás de tudo */
+  
     #snow {
       position: fixed;
       top: 0;
@@ -26,7 +26,7 @@
       z-index: 0;
     }
 
-    /* Botão música clean */
+   
     #music-toggle {
       position: fixed;
       top: 20px;
@@ -162,18 +162,18 @@
 </head>
 <body>
 
-  <!-- Botão música clean -->
+ 
   <button id="music-toggle" aria-label="Toggle music">🔊</button>
 
-  <!-- Neve (canvas) -->
+  
   <canvas id="snow"></canvas>
 
-  <!-- Tela Inicial -->
+  
   <div id="inicio" class="tela-inicial">
     <button id="btnIniciar">clique aqui...</button>
   </div>
 
-  <!-- Perfis -->
+  
   <div id="perfis" class="container-perfis">
     <h1 class="titulo"></h1>
     <div class="cards">
@@ -196,7 +196,7 @@
     </div>
   </div>
 
-  <!-- Áudio -->
+  
   <audio id="bg-music" loop>
     <source src="audio\audio1.mp3" type="audio/mpeg" />
     Seu navegador não suporta áudio.
@@ -224,7 +224,7 @@
           console.log("Música começou a tocar");
         }).catch((error) => {
           console.warn("Não foi possível tocar a música automaticamente.", error);
-          // Se não tocar automaticamente, deixe o botão pronto para ligar
+          
           isPlaying = false;
           toggleBtn.textContent = "🔇";
         });
@@ -246,7 +246,7 @@
       isPlaying = !isPlaying;
     });
 
-    // Neve
+   
     const canvas = document.getElementById('snow');
     const ctx = canvas.getContext('2d');
     let width = window.innerWidth;
@@ -311,3 +311,4 @@
 
 </body>
 </html>
+
