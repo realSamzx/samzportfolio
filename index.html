@@ -1,351 +1,313 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sociedade secreta</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #000;
-            overflow: hidden;
-            height: 100vh;
-        }
-        
-        .snowflake {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            pointer-events: none;
-            opacity: 0.8;
-            animation: fall linear infinite;
-        }
-        
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-        
-        .profile-img {
-            border: 3px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .profile-img:hover {
-            transform: scale(1.05);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-        
-        .glow-text {
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-        }
-        
-        .social-icon {
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover {
-            transform: translateY(-3px);
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7));
-        }
-        
-        .music-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 100;
-        }
-        
-        .music-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-        }
-        
-     
-        .status-message {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            max-width: 250px;
-            font-size: 14px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 100;
-        }
-        
-        .status-message.show {
-            opacity: 1;
-        }
-        
-       
-        .terminal {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
-        }
-        
-        .terminal-header {
-            padding: 8px 12px;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        
-        .terminal-content {
-            padding: 12px;
-            font-family: 'Courier New', monospace;
-            color: #0f0;
-            height: 120px;
-            overflow-y: auto;
-        }
-        
-        .terminal-line {
-            margin-bottom: 6px;
-            line-height: 1.4;
-        }
-        
-        .terminal-cursor {
-            display: inline-block;
-            width: 8px;
-            height: 14px;
-            background-color: #0f0;
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-    </style>
-</head>
-<body class="relative">
-   
-    <div id="snow-container"></div>
-    
-    
-    -->
-    <audio id="bg-music" loop>
-        <source src="audio\audio1.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <button id="music-toggle" class="music-btn">
-        <svg id="music-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
-            <line x1="12" y1="8" x2="12" y2="16"></line>
-            <line x1="8" y1="12" x2="16" y2="12"></line>
-        </svg>
-        <span id="music-text">Ligar Música</span>
-    </button>
-    
-  
-    <div class="status-message" id="status-message"></div>
-    
-  >
-    <div class="flex flex-col items-center justify-center min-h-screen px-4 text-center">
-        <div class="max-w-md w-full bg-black bg-opacity-50 backdrop-blur-sm rounded-xl p-8 border border-gray-800 shadow-2xl transform transition-all duration-500 hover:shadow-white/10">
-            
-            <div class="flex justify-center mb-6">
-                <img src="https://media.discordapp.net/attachments/1414370284542234754/1414399767815127143/dc_boy_2.jpg?ex=68c1682e&is=68c016ae&hm=099abf51e63161e4d0f9cc256c93202fd1104c9fb7d712092ee808bf52cf00c9&=&format=webp"
-                     alt="Samz Profile"
-                     class="profile-img w-32 h-32 rounded-full object-cover">
-            </div>
-            
-          
-            <h1 class="text-4xl font-bold text-white mb-2 glow-text">samz</h1>
-            
-          
-            <p class="text-gray-300 mb-6 text-lg">
-                cybersecurity pentester & hacking.
-            </p>
-            
-            
-            <div class="terminal mb-6">
-                <div class="terminal-header">
-                    <div class="terminal-dot bg-red-500"></div>
-                    <div class="terminal-dot bg-yellow-500"></div>
-                    <div class="terminal-dot bg-green-500"></div>
-                    <span class="text-gray-400 ml-2 text-sm">terminal</span>
-                </div>
-                <div class="terminal-content" id="terminal-content">
-                    <div class="terminal-line">$ whoami</div>
-                    <div class="terminal-line">> samz - cybersecurity specialist</div>
-                    <div class="terminal-line">$ skills --list</div>
-                    <div class="terminal-line">> pentesting | ethical hacking | security research</div>
-                    <div class="terminal-line">$ <span class="terminal-cursor"></span></div>
-                </div>
-            </div>
-            
-            
-            <div class="flex justify-center">
-                <a href="https://github.com/realSamzx" target="_blank" class="social-icon text-gray-400 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github">
-                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>forever us</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    html, body {
+      height: 100%; 
+      overflow: hidden; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #000; 
+      color: #fff; 
+      position: relative;
+    }
 
-    <script>
-        
-        function createSnow() {
-            const snowContainer = document.getElementById('snow-container');
-            const snowflakeCount = 50;
-            
-            for (let i = 0; i < snowflakeCount; i++) {
-                const snowflake = document.createElement('div');
-                snowflake.classList.add('snowflake');
-                
-                
-                const size = Math.random() * 4 + 2;
-                snowflake.style.width = `${size}px`;
-                snowflake.style.height = `${size}px`;
-                
-                
-                snowflake.style.left = `${Math.random() * 100}vw`;
-                snowflake.style.top = `${Math.random() * -100}px`;
-                
-                const duration = Math.random() * 10 + 5;
-                snowflake.style.animationDuration = `${duration}s`;
-                
-                snowflake.style.animationDelay = `${Math.random() * 5}s`;
-                
-                snowContainer.appendChild(snowflake);
-            }
-        }
-        
-        function showStatusMessage(message, duration = 3000) {
-            const statusElement = document.getElementById('status-message');
-            statusElement.textContent = message;
-            statusElement.classList.add('show');
-            
-            setTimeout(() => {
-                statusElement.classList.remove('show');
-            }, duration);
-        }
-        
-        function typeTerminalText() {
-            const terminal = document.getElementById('terminal-content');
-            const lines = [
-                "$ whoami",
-                "> samz - cybersecurity specialist",
-                "$ skills --list",
-                "> pentesting | ethical hacking | security research",
-                "$ "
-            ];
-            
-            terminal.innerHTML = '';
-            
-            lines.forEach((line, index) => {
-                setTimeout(() => {
-                    const lineElement = document.createElement('div');
-                    lineElement.className = 'terminal-line';
-                    
-                    if (index === lines.length - 1) {
-                        lineElement.innerHTML = line + '<span class="terminal-cursor"></span>';
-                    } else {
-                        lineElement.textContent = line;
-                    }
-                    
-                    terminal.appendChild(lineElement);
-                    terminal.scrollTop = terminal.scrollHeight;
-                }, index * 800);
-            });
-            
-            setTimeout(typeTerminalText, lines.length * 800 + 2000);
-        }
-        
-        function setupMusicControl() {
-            const music = document.getElementById('bg-music');
-            const toggleBtn = document.getElementById('music-toggle');
-            const musicIcon = document.getElementById('music-icon');
-            const musicText = document.getElementById('music-text');
-            
-            let isPlaying = false;
-            
-            toggleBtn.addEventListener('click', function() {
-                if (isPlaying) {
-                    music.pause();
-                    musicIcon.innerHTML = `
-                        <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
-                        <line x1="12" y1="8" x2="12" y2="16"></line>
-                        <line x1="8" y1="12" x2="16" y2="12"></line>
-                    `;
-                    musicText.textContent = 'Ligar Música';
-                    showStatusMessage('Música pausada');
-                } else {
-                    music.play()
-                        .then(() => {
-                            musicIcon.innerHTML = `
-                                <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
-                                <line x1="9" y1="9" x2="9" y2="15"></line>
-                                <line x1="15" y1="9" x2="15" y2="15"></line>
-                            `;
-                            musicText.textContent = 'Desligar Música';
-                            showStatusMessage('Música tocando');
-                        })
-                        .catch(error => {
-                            showStatusMessage('Erro ao reproduzir música: ' + error.message);
-                        });
-                }
-                
-                isPlaying = !isPlaying;
-            });
-            
-            music.addEventListener('ended', function() {
-                isPlaying = false;
-                musicIcon.innerHTML = `
-                    <path d="M19 21a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z"></path>
-                    <line x1="12" y1="8" x2="12" y2="16"></line>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                `;
-                musicText.textContent = 'Ligar Música';
-            });
-        }
-        
-        window.addEventListener('load', function() {
-            createSnow();
-            setupMusicControl();
-            typeTerminalText();
+    /* Neve atrás de tudo */
+    #snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Botão música clean */
+    #music-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 1.8em;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    #music-toggle:hover {
+      color: #aaa;
+    }
+
+    .tela-inicial {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+      transition: opacity 0.6s ease;
+      z-index: 5;
+      position: relative;
+    }
+    #btnIniciar {
+      padding: 1em 2em;
+      font-size: 1.4em;
+      background-color: transparent;
+      color: white;
+      border: 1px solid white;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    #btnIniciar:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    .container-perfis {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2em;
+      animation: fadeIn 1s ease forwards;
+      min-height: 100vh;
+      text-align: center;
+      position: relative;
+      z-index: 5;
+    }
+
+    .titulo {
+      font-size: 3em;
+      margin-bottom: 2em;
+      letter-spacing: 3px;
+    }
+
+    .cards {
+      display: flex;
+      gap: 3em;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 900px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2em;
+      border-radius: 20px;
+      text-align: center;
+      width: 300px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: cardEnter 1s ease forwards;
+    }
+    .card:nth-child(1) { animation-delay: 0.4s; }
+    .card:nth-child(2) { animation-delay: 0.6s; }
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.1);
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1em;
+      border: 2px solid white;
+    }
+    .tag {
+      background: #444;
+      padding: 0.4em 0.8em;
+      border-radius: 10px;
+      font-size: 0.9em;
+      display: inline-block;
+      margin-bottom: 0.5em;
+    }
+    .card p {
+      font-size: 1em;
+      line-height: 1.4;
+      margin: 0.4em 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cardEnter {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @media (max-width: 700px) {
+      .cards {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 90%;
+      }
+      .titulo {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botão música clean -->
+  <button id="music-toggle" aria-label="Toggle music">🔊</button>
+
+  <!-- Neve (canvas) -->
+  <canvas id="snow"></canvas>
+
+  <!-- Tela Inicial -->
+  <div id="inicio" class="tela-inicial">
+    <button id="btnIniciar">clique aqui...</button>
+  </div>
+
+  <!-- Perfis -->
+  <div id="perfis" class="container-perfis">
+    <h1 class="titulo"></h1>
+    <div class="cards">
+      <div class="card">
+        <img src="https://media.discordapp.net/attachments/1411476060062617674/1411794112608211084/xxzxc_12.jpg?ex=68b5f33a&is=68b4a1ba&hm=ddb60711ba07c05de0c43b6d372ed68a5ac1971b1b2ff6d34b4c36c5c3165dd1&=&format=webp" alt="samz" class="avatar" />
+        <h2>samz</h2>
+        <span class="tag">despistar</span>
+        <p>2+ Years of Developing</p>
+        <p>I love tears.</p>
+        <p>1* ?</p>
+      </div>
+      <div class="card">
+        <img src="https://cdn.discordapp.com/attachments/1411476060062617674/1411794113002471434/xxzxc_13.jpg?ex=68b5f33a&is=68b4a1ba&hm=1c98a68ca4faf605463b56f920df9477e3acaf42807059430d28c64c81f5c033&" alt="misery" class="avatar" />
+        <h2>tears</h2>
+        <span class="tag">drowingintear</span>
+        <p>discord.gg/lottus</p>
+        <p>i love samz.</p>
+        <p>s2</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Áudio -->
+  <audio id="bg-music" loop>
+    <source src="audio\audio1.mp3" type="audio/mpeg" />
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <script>
+    const btnIniciar = document.getElementById("btnIniciar");
+    const telaInicial = document.getElementById("inicio");
+    const perfis = document.getElementById("perfis");
+    const music = document.getElementById("bg-music");
+    const toggleBtn = document.getElementById("music-toggle");
+    let isPlaying = false;
+
+    btnIniciar.addEventListener("click", () => {
+      telaInicial.style.opacity = 0;
+      setTimeout(() => {
+        telaInicial.style.display = "none";
+        perfis.style.display = "flex";
+
+        music.volume = 0.5;
+
+        music.play().then(() => {
+          isPlaying = true;
+          toggleBtn.textContent = "🔊";
+          console.log("Música começou a tocar");
+        }).catch((error) => {
+          console.warn("Não foi possível tocar a música automaticamente.", error);
+          // Se não tocar automaticamente, deixe o botão pronto para ligar
+          isPlaying = false;
+          toggleBtn.textContent = "🔇";
         });
-    </script>
+      }, 600);
+    });
+
+    toggleBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        music.pause();
+        toggleBtn.textContent = "🔇";
+      } else {
+        music.play().then(() => {
+          toggleBtn.textContent = "🔊";
+          isPlaying = true;
+        }).catch(error => {
+          console.warn("Erro ao tentar tocar música:", error);
+        });
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // Neve
+    const canvas = document.getElementById('snow');
+    const ctx = canvas.getContext('2d');
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+
+    const snowflakes = [];
+    function createSnowflakes() {
+      for (let i = 0; i < 100; i++) {
+        snowflakes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 3 + 1,
+          speed: Math.random() * 1 + 0.5,
+          wind: Math.random() * 0.5 - 0.25
+        });
+      }
+    }
+
+    function drawSnowflakes() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      for (let flake of snowflakes) {
+        ctx.moveTo(flake.x, flake.y);
+        ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      moveSnowflakes();
+    }
+
+    function moveSnowflakes() {
+      for (let flake of snowflakes) {
+        flake.y += flake.speed;
+        flake.x += flake.wind;
+        if (flake.y > height) {
+          flake.y = -flake.radius;
+          flake.x = Math.random() * width;
+        }
+        if (flake.x > width || flake.x < 0) {
+          flake.x = Math.random() * width;
+        }
+      }
+    }
+
+    function animateSnow() {
+      drawSnowflakes();
+      requestAnimationFrame(animateSnow);
+    }
+
+    window.addEventListener('resize', () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    });
+
+    createSnowflakes();
+    animateSnow();
+  </script>
+
 </body>
 </html>
-
-
